@@ -1,0 +1,172 @@
+<% layout('boilerplate') %>
+
+</head>
+<body>
+    <!-- Navigation -->
+    
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Digital Excellence</h1>
+        <p>Premium websites crafted for ambitious brands and visionaries</p>
+        <button class="cta-btn">View Packages</button>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section class="trust-section">
+        <div class="trust-container">
+            <div class="trust-item">
+                <i data-lucide="truck" width="32" height="32"></i>
+                <h3>Rapid Deployment</h3>
+                <p>Launch-ready within 14 days</p>
+            </div>
+            <div class="trust-item">
+                <i data-lucide="shield" width="32" height="32"></i>
+                <h3>Premium Code Quality</h3>
+                <p>Hand-coded with best practices</p>
+            </div>
+            <div class="trust-item">
+                <i data-lucide="award" width="32" height="32"></i>
+                <h3>Ongoing Support</h3>
+                <p>6 months maintenance included</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+
+
+    <script>
+        // Product Data
+        const products = [
+
+            {
+                id: 4,
+                name: 'Conversion Landing Pro',
+                category: 'Landing Pages',
+                price: 1000,
+                image: 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=800&q=80',
+                rating: 5,
+                features: ['fast develloping', 'Fast Loading','3 days delivery']
+            },
+            {
+                id: 5,
+                name: 'Reservation website',
+                category: 'Reservation',
+                price: 5500,
+                image: 'https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80',
+                rating: 5,
+                features: ['Integrated backend', 'Dashboard','10 days delivery']
+            },
+            {
+                id: 6,
+                name: 'Portfolio website',
+                category: 'Portfolio',
+                price: 2000,
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=80',
+                rating: 5,
+                features: ['Rapid Deployment', 'Simple form ', '5 days Delivery']
+            }
+        ];
+
+        let currentCategory = 'All';
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const filtered = currentCategory === 'All' 
+                ? products 
+                : products.filter(p => p.category === currentCategory);
+
+grid.innerHTML = filtered.map(product => `
+    <div class="product-card">
+        <div class="product-image">
+            <img src="${product.image}" alt="${product.name}">
+        </div>
+        <div class="product-content">
+            <div class="product-category">${product.category}</div>
+            <h3 class="product-name">${product.name}</h3>
+            <div class="product-rating">
+                ${Array(product.rating).fill('<i data-lucide="star" width="14" height="14" fill="#1A1A1A" stroke="#1A1A1A"></i>').join('')}
+            </div>
+            <div class="product-features">
+                ${product.features.map(feature => `
+                    <div class="feature-item">
+                        <i data-lucide="chevron-right" width="14" height="14"></i>
+                        <span>${feature}</span>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="product-price">${product.price.toLocaleString()} DH</div>
+            <a href="/packages/${product.category.toLowerCase()}" class="product-btn">View Package</a>
+        </div>
+    </div>
+`).join('');
+
+// CRITICAL: You must call this after setting innerHTML
+lucide.createIcons();
+
+            // Re-initialize Lucide icons
+            lucide.createIcons();
+        }
+
+        // Filter Category
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            // Update desktop nav
+            document.querySelectorAll('.desktop-nav .nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === category) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update mobile nav
+            document.querySelectorAll('.mobile-menu button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === category) {
+                    btn.classList.add('active');
+                }
+            });
+
+            renderProducts();
+        }
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.querySelector('.mobile-menu-btn i');
+            
+            menu.classList.toggle('active');
+            
+            // Change icon
+            if (menu.classList.contains('active')) {
+                btn.setAttribute('data-lucide', 'x');
+            } else {
+                btn.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const btn = document.querySelector('.mobile-menu-btn i');
+            
+            menu.classList.remove('active');
+            btn.setAttribute('data-lucide', 'menu');
+            lucide.createIcons();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
